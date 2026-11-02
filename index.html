@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b5d2a">
+<title>SendMoney – Prototype</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="phone" id="phone">
+  <div class="statusbar"><span>9:41</span><span class="sb-icons">●●● ▮</span></div>
+
+  <!-- ACCUEIL -->
+  <section class="screen active" id="home">
+    <header class="topbar">
+      <div class="logo"><i data-ic="send"></i><b>Send<span>Money</span></b></div>
+      <button class="icon-btn bell" data-toast="Aucune nouvelle notification"><i data-ic="bell"></i><em>3</em></button>
+    </header>
+    <h1 class="hello">Bonjour Reine 👋</h1>
+    <p class="muted">Envoyez de l'argent en toute sécurité, rapidement et facilement.</p>
+
+    <div class="card balance">
+      <div class="row between"><span>Solde disponible</span><button class="ghost" id="toggleEye"><i data-ic="eye"></i></button></div>
+      <div class="amount"><span id="balance">125 000</span> <small>XAF</small></div>
+      <button class="pill" id="recharge"><i data-ic="plus"></i> Recharger mon solde</button>
+    </div>
+
+    <div class="grid2">
+      <button class="tile" data-go="send"><i data-ic="send"></i><span>Envoyer<br>de l'argent</span></button>
+      <button class="tile" id="receiveBtn"><i data-ic="download"></i><span>Recevoir<br>de l'argent</span></button>
+    </div>
+
+    <button class="promo" data-go="send">
+      <div><b>Transfert Congo → Sénégal</b><small>Frais réduits, arrivée rapide !</small></div>
+      <span class="flags"><i class="flag cg"></i><i class="flag sn"></i></span>
+    </button>
+
+    <div class="row between section-title"><b>Dernières transactions</b><button class="link" data-go="history">Voir tout ›</button></div>
+    <div id="homeTx"></div>
+  </section>
+
+  <!-- ENVOYER -->
+  <section class="screen" id="send">
+    <header class="topbar center">
+      <button class="icon-btn" data-back><i data-ic="back"></i></button>
+      <b>Envoyer de l'argent</b>
+      <button class="icon-btn green" data-go="help"><i data-ic="headset"></i></button>
+    </header>
+    <label class="lbl">De</label>
+    <div class="select"><i class="flag cg"></i><b>Congo</b><i data-ic="chevD"></i></div>
+    <div class="avail">Solde disponible : <span id="availBal">125 000</span> XAF</div>
+    <label class="lbl">Vers</label>
+    <div class="select"><i class="flag sn"></i><b>Sénégal</b><i data-ic="chevD"></i></div>
+
+    <h3 class="mt">Montant à envoyer</h3>
+    <div class="amt-input"><input id="amt" inputmode="numeric" value="50 000" autocomplete="off"><span>XAF</span></div>
+    <div class="chips" id="chips">
+      <button data-v="10000">10k</button><button data-v="25000">25k</button><button data-v="50000" class="on">50k</button><button data-v="100000">100k</button>
+    </div>
+    <div class="row between mt2"><span class="muted">Frais de transfert ⓘ</span><b id="fee">1 000 XAF</b></div>
+    <div class="recv"><small>Le bénéficiaire recevra</small><div><span id="recv">49 000</span> XOF</div></div>
+    <p class="error" id="amtErr"></p>
+    <button class="cta" id="continue">Continuer →</button>
+  </section>
+
+  <!-- HISTORIQUE -->
+  <section class="screen" id="history">
+    <h1 class="title">Historique</h1>
+    <div class="tabs" id="histTabs"><button class="on" data-f="all">Tout</button><button data-f="out">Envoyés</button><button data-f="in">Reçus</button></div>
+    <div id="histList"></div>
+  </section>
+
+  <!-- DETAIL -->
+  <section class="screen" id="detail">
+    <header class="topbar center"><button class="icon-btn" data-back><i data-ic="back"></i></button><b>Détail de transaction</b><span class="sp"></span></header>
+    <div class="check big"><i data-ic="check"></i></div>
+    <h2 class="c">Transfert réussi !</h2>
+    <p class="muted c">Votre argent a bien été envoyé.</p>
+    <div class="big-amount" id="dAmount">- 50 000 XAF</div>
+    <div class="card light">
+      <div class="kv"><span>Bénéficiaire</span><b id="dWho">Jean Dupont</b></div>
+      <div class="kv"><span>Pays de destination</span><b><i class="flag sn"></i> Sénégal</b></div>
+      <div class="kv"><span>Date</span><b id="dDate"></b></div>
+      <div class="kv"><span>Référence</span><b id="dRef"></b></div>
+    </div>
+    <button class="cta outline" id="share"><i data-ic="share"></i> Partager le reçu</button>
+    <button class="cta" data-go="home">Retour à l'accueil</button>
+  </section>
+
+  <!-- SUCCES -->
+  <section class="screen success" id="success">
+    <div class="check big"><i data-ic="check"></i></div>
+    <h2 class="c">Opération réussie !</h2>
+    <p class="muted c">Votre argent a été envoyé avec succès au Sénégal.</p>
+    <div class="card light">
+      <div class="kv"><span>Montant envoyé</span><b id="sSent"></b></div>
+      <div class="kv"><span>Montant reçu</span><b id="sRecv"></b></div>
+      <div class="kv"><span>Référence</span><b id="sRef"></b></div>
+    </div>
+    <div class="skyline">✈️</div>
+    <button class="cta" data-go="home">Retour à l'accueil</button>
+  </section>
+
+  <!-- AIDE -->
+  <section class="screen" id="help">
+    <header class="topbar"><h1 class="title">Aide</h1><button class="icon-btn green"><i data-ic="headset"></i></button></header>
+    <div class="search"><i data-ic="search"></i><input id="faqSearch" placeholder="Rechercher une question..."></div>
+    <h3>Questions fréquentes</h3>
+    <div class="faq" id="faq"></div>
+    <div class="card light contact">
+      <div class="row"><i data-ic="headset"></i><div><b>Nous contacter</b><small>Notre équipe est disponible 24h/24 et 7j/7</small></div></div>
+      <button class="cta" data-toast="Ouverture de la messagerie…"><i data-ic="mail"></i> Nous écrire</button>
+    </div>
+  </section>
+
+  <!-- COMPTE -->
+  <section class="screen" id="account">
+    <div class="acc-head">
+      <div class="avatar">RP</div>
+      <div><b>Reine Esther</b><small>+242 06 12 34 56</small><span class="badge">Compte vérifié ✓</span></div>
+      <button class="icon-btn white" data-go="profile"><i data-ic="pen"></i></button>
+    </div>
+    <ul class="menu">
+      <li data-go="home"><i data-ic="wallet"></i>Mon solde<i data-ic="chevR"></i></li>
+      <li data-go="history"><i data-ic="list"></i>Mes transactions<i data-ic="chevR"></i></li>
+      <li data-toast="Démo : écran non inclus"><i data-ic="users"></i>Mes bénéficiaires<i data-ic="chevR"></i></li>
+      <li data-toast="Démo : écran non inclus"><i data-ic="gauge"></i>Mes limites de transfert<i data-ic="chevR"></i></li>
+      <hr>
+      <li data-go="profile"><i data-ic="settings"></i>Paramètres<i data-ic="chevR"></i></li>
+      <li data-toast="Démo : écran non inclus"><i data-ic="bell"></i>Notifications<i data-ic="chevR"></i></li>
+      <li data-toast="Démo : écran non inclus"><i data-ic="shield"></i>Sécurité<i data-ic="chevR"></i></li>
+      <li data-toast="SendMoney – prototype v1.0"><i data-ic="info"></i>À propos de SendMoney<i data-ic="chevR"></i></li>
+      <li data-toast="Déconnexion simulée"><i data-ic="logout"></i>Déconnexion<i data-ic="chevR"></i></li>
+    </ul>
+  </section>
+
+  <!-- PROFIL -->
+  <section class="screen" id="profile">
+    <header class="topbar center"><button class="icon-btn" data-back><i data-ic="back"></i></button><b>Mon profil</b><span class="sp"></span></header>
+    <div class="avatar xl">RP<span class="cam"><i data-ic="camera"></i></span></div>
+    <p class="c"><b>Changer ma photo</b></p>
+    <div class="fields">
+      <div><small>Nom complet</small><input value="Reine Esther"></div>
+      <div><small>Numéro de téléphone</small><input value="+242 06 12 34 56"></div>
+      <div><small>Email</small><input value="reineesther@gmail.com"></div>
+    </div>
+    <h4>Préférences</h4>
+    <div class="fields">
+      <div class="row between"><span>Langue</span><b>🇫🇷 Français ›</b></div>
+      <div class="row between"><span>Notifications</span><button class="switch on" id="notifSwitch"><i></i></button></div>
+    </div>
+  </section>
+
+  <nav class="tabbar" id="tabbar">
+    <button data-go="home" data-tab="home"><i data-ic="home"></i>Accueil</button>
+    <button data-go="history" data-tab="history"><i data-ic="clock"></i>Historique</button>
+    <button data-go="help" data-tab="help"><i data-ic="help"></i>Aide</button>
+    <button data-go="account" data-tab="account"><i data-ic="user"></i>Compte</button>
+  </nav>
+  <div class="toast" id="toast"></div>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
